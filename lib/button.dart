@@ -10,17 +10,23 @@ class Button extends StatelessWidget {
 
   //Faça aqui um construtor para receber via parametro
   // e popular nossas propriedade
-  Button({ required this.color, required this.textColor, required this.buttonText, this.buttontapped});
+  Button({
+    required this.color,
+    required this.textColor,
+    required this.buttonText,
+    this.buttontapped,
+  });
   //Abaixo temos o comentario
   // indicando onde cada propriedade devera ir
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: buttontapped,
       child: Padding(
-        padding: const EdgeInsets.all(0.2),
+        padding: EdgeInsets.all(4),
         child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
           child: Container(
             color: color,
             child: Center(
@@ -29,8 +35,7 @@ class Button extends StatelessWidget {
                 style: TextStyle(
                     color: textColor,
                     fontSize: 25,
-                    fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
