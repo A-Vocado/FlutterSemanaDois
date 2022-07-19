@@ -37,6 +37,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //Nosso atributo "userInput" é um string que armazena o valor que está sendo digitado pelo usuário.
   String userInput = '';
+
   //Nosso atributo "answer" é um string que armazena o valor que está sendo mostrado na tela como resposta.
   String answer = '';
 
@@ -68,91 +69,119 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calculador'),
+        title: const Text('Calculator'),
+        backgroundColor: const Color(0xFF303030),
       ),
-      backgroundColor: Colors.white38,
-      //Esta Column é onde começa o desenho da nossa calculadora,
+      backgroundColor: const Color(0xFF303030),
       body: Column(
+        //Esta Column é onde começa o desenho da nossa calculadora,
         children: <Widget>[
-          //Este Expanded é onde fica o display da nossa calculadora,
           Expanded(
+            //Este Expanded é onde fica o display da nossa calculadora,
+            child: Container(
               //Este Container é onde fica o que é digitado pelo usuário,
-              child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(20),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    userInput,
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      userInput,
+                      style: const TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                //Já este Container é onde fica o que é mostrado na tela como resposta,
-                Container(
-                  padding: EdgeInsets.all(15),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    answer,
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
+                  //Já este Container é onde fica o que é mostrado na tela como resposta,
+                  Container(
+                    padding: const EdgeInsets.all(15),
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      answer,
+                      style: const TextStyle(
+                          fontSize: 40,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ),
             ),
-          )),
+          ),
           //Este Expanded é onde fica a lista de botões da calculadora,
           Expanded(
-            flex: 3,
-            child: Container(
-              //Aqui utilizamos o GridView.builder para criar uma lista de widget botões,
-              child: GridView.builder(
-                //Aqui utilizamos o itemCount para definir o número de botões que serão criados,
-                itemCount: buttons.length,
-                //Aqui utilizamos o gridDelegate para definir o tamanho dos botões,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4),
-                //Aqui utilizamos o itemBuilder para criar os botões,
-                itemBuilder: (BuildContext context, int index) {
-                  //Clear Button
-                  // if(buttons[index] == 'C'){
-                  //
-                  // }
-                  // //Delete Button
-                  // if(buttons[index] == 'DEL'){
-                  //
-                  // }
-                  //Equal_to Button
-                  if (buttons[index] == '=') {
-                    return Button(
-                      buttontapped: () {
-                        setState(() {
-                          equalPressed();
-                        });
-                      },
-                      buttonText: buttons[index],
-                      color: Colors.orange[700],
-                      textColor: Colors.white,
-                    );
-                  }
-                  //other buttons
-                  else {
-                    return Button(
-                        buttontapped: () =>
-                            setState(() => userInput += buttons[index]),
-                        color: isOperator(buttons[index])
-                            ? Colors.blueAccent
-                            : Colors.white,
-                        textColor: isOperator(buttons[index])
-                            ? Colors.white
-                            : Colors.black,
-                        buttonText: buttons[index]);
-                  }
-                },
-              ),
+            flex: 0,
+            child: GridView.builder(
+              //Aqui utilizamos o itemCount para definir o número de botões que serão criados,
+              itemCount: buttons.length,
+              //Aqui utilizamos o gridDelegate para definir o tamanho dos botões,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4),
+              //Aqui utilizamos o itemBuilder para criar os botões,
+              itemBuilder: (BuildContext context, int index) {
+                //Clear Button
+                if (buttons[index] == 'C') {
+                  return Button(
+                    buttontapped: () {
+                      setState(() {
+                        userInput = '';
+                        answer = '';
+                      });
+                    },
+                    buttonText: buttons[index],
+                    color: const Color.fromARGB(255, 144, 223, 203),
+                    textColor: Colors.black,
+                  );
+                }
+                //Delete Button
+                else if (buttons[index] == 'DEL') {
+                  return Button(
+                    buttontapped: () {
+                      setState(() {
+                        userInput =
+                            userInput.substring(0, userInput.length - 1);
+                      });
+                    },
+                    buttonText: buttons[index],
+                    color: const Color.fromARGB(255, 144, 223, 203),
+                    textColor: Colors.black,
+                  );
+                }
+                //Equal_to Button
+                else if (buttons[index] == '=') {
+                  return Button(
+                    buttontapped: () {
+                      setState(() {
+                        equalPressed();
+                      });
+                    },
+                    buttonText: buttons[index],
+                    color: Colors.orange[700],
+                    textColor: Colors.white,
+                  );
+                } else if (buttons[index] == '%' || buttons[index] == '+/-') {
+                  return Button(
+                      buttontapped: () {},
+                      color: const Color.fromARGB(255, 144, 223, 203),
+                      textColor: Colors.black,
+                      buttonText: buttons[index]);
+                }
+                //other buttons
+                else {
+                  return Button(
+                      buttontapped: () =>
+                          setState(() => userInput += buttons[index]),
+                      color: isOperator(buttons[index])
+                          ? const Color.fromARGB(255, 1, 172, 129)
+                          : Colors.white,
+                      textColor: isOperator(buttons[index])
+                          ? Colors.white
+                          : Colors.black,
+                      buttonText: buttons[index]);
+                }
+              },
             ),
           )
         ],
@@ -171,7 +200,10 @@ class _HomePageState extends State<HomePage> {
 //Método que converte a String do usuário em uma expressão matemática e calcula o resultado.
   void equalPressed() {
     String finaluserinput = userInput;
-    finaluserinput = userInput.replaceAll('x', '*');
+    finaluserinput = userInput.replaceAll(
+      'x',
+      '*',
+    );
 
     Parser p = Parser();
     //Aqui utilizamos o parseExpression para converter a String do usuário em uma expressão matemática.
